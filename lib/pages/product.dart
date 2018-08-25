@@ -1,37 +1,43 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class ProductPage extends StatelessWidget {
-  // final String title;
-  // final String imageUrl;
+  final String title;
+  final String imageUrl;
 
 
-  // ProductPage(this.title, this.imageUrl);
+  ProductPage(this.title, this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
+    return WillPopScope(onWillPop: () {
+      print('Back button Pressed');
+      Navigator.pop(context, false);
+      return Future.value(false);
+    }, child: Scaffold(
       appBar: AppBar(
-        title: Text('Men'),
+        title: Text(title),
       ),
       body: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/food.jpg'),
+            Image.asset(imageUrl),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: Text('good'),
+              child: Text(title),
             ),
             Container(
               padding: EdgeInsets.all(10.0),
               child: RaisedButton(
                 color: Theme.of(context).accentColor,
-                child: Text('BACK'),
-                onPressed: () => Navigator.pop(context),
+                child: Text('DELETE'),
+                onPressed: () => Navigator.pop(context, true),
               ),
             )
           ]),
+      ),
     );
   }
 }

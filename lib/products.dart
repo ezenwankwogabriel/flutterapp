@@ -4,10 +4,11 @@ import './pages/product.dart';
 
 //lifecycle for StatelessWidget {constructor, build}
 class Products extends StatelessWidget {
-  final List<String> products;
+  final List<Map<String, String>> products;
+  final Function deleteProduct;
 
   //constructor
-  Products([this.products = const []]) {
+  Products(this.products, {this.deleteProduct}) {
     print('Products Widget Constructor');
   }
 
@@ -15,19 +16,26 @@ class Products extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset('assets/food.jpg'),
-          // Text('gabby'),
+          Image.asset(products[index]['image']),
+          Text(products[index]['title']),
           //button bar allows u add more than one buttons
-          ButtonBar(alignment: MainAxisAlignment.center, 
-          children: <Widget>[
+          ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
             FlatButton(
               child: Text('Details'),
-              onPressed: () => Navigator.push(
+              onPressed: () => Navigator
+                      .push<bool>(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => ProductPage(),
+                      builder: (BuildContext context) => ProductPage(
+                          products[index]['title'], products[index]['image']),
                     ),
-                  ),
+                  )
+                      .then((bool value) {
+                        if (value) {
+                          deleteProduct(index);
+                        }
+                    print(value);
+                  }),
             )
           ])
         ],

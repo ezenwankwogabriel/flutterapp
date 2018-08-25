@@ -4,7 +4,7 @@ import './products.dart';
 import './product_control.dart';
 
 class ProductManager extends StatefulWidget {
-  final String startingProduct;
+  final Map<String, String> startingProduct;
 
   ProductManager({this.startingProduct}) {
     print('productManager Widget Constructor setState()');
@@ -18,17 +18,18 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  List<String> _products = [];
+  List<Map<String, String>> _products = [];
 
   @override
-    void initState() {
-    print('productManager Widget Constructor initState()');
+  void initState() {
+    print('[ProductManager State] initState()');
+    if (widget.startingProduct != null) {
       _products.add(widget.startingProduct);
-      // TODO: implement initState
-      super.initState();
     }
+    super.initState();
+  }
 
-  void _addProduct(String product) {
+  void _addProduct(Map<String, String> product) {
      setState(() {
         _products.add(product);
       });
@@ -41,6 +42,13 @@ class _ProductManagerState extends State<ProductManager> {
       super.didUpdateWidget(oldWidget);
     }
 
+  void _deleteProduct(int index) {
+    setState(() {
+      print( _products);
+          _products.removeAt(index);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     print('productManager Widget Constructor build()');
@@ -51,7 +59,7 @@ class _ProductManagerState extends State<ProductManager> {
           margin: EdgeInsets.all(10.0),
           child: ProductControl(_addProduct),
         ),
-        Expanded( child: Products(_products) )
+        Expanded( child: Products(_products, deleteProduct: _deleteProduct) )
          
       ],
     );
